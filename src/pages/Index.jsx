@@ -283,8 +283,9 @@ const Index = () => {
             </div>
             <nav className="mb-6 md:mb-0">
               <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 text-center md:text-left">
-                <li><a href="#" className="hover:text-blue-300 transition duration-300 block">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-blue-300 transition duration-300 block">Terms of Service</a></li>
+                <li><Link to="/privacy-policy" className="hover:text-blue-300 transition duration-300 block">Privacy Policy</Link></li>
+                <li><Link to="/terms-of-service" className="hover:text-blue-300 transition duration-300 block">Terms of Service</Link></li>
+                <li><Link to="/refund-policy" className="hover:text-blue-300 transition duration-300 block">Refund Policy</Link></li>
                 <li><a href="#" className="hover:text-blue-300 transition duration-300 block">Contact Us</a></li>
               </ul>
             </nav>
