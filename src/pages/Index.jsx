@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Camera, Upload, Download, User, Briefcase, Globe, Award, Check } from 'lucide-react';
+import { Camera, Upload, Download, User, Briefcase, Globe, Award, Check, Menu } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Index = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -20,13 +27,18 @@ const Index = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
+            className="flex items-center"
           >
-            <h1 className="text-2xl font-bold text-blue-600">HeadshotAI</h1>
+            <h1 className="text-2xl font-bold text-blue-600 mr-4">HeadshotAI</h1>
+            <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300 hidden md:inline-flex">
+              Get Started Now
+            </Button>
           </motion.div>
           <motion.nav
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
+            className="hidden md:block"
           >
             <ul className="flex space-x-6">
               <li><a href="#" className="text-blue-600 hover:text-blue-800">Home</a></li>
@@ -35,6 +47,32 @@ const Index = () => {
               <li><a href="#" className="text-blue-600 hover:text-blue-800">Contact</a></li>
             </ul>
           </motion.nav>
+          <div className="md:hidden flex items-center">
+            <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300 mr-2">
+              Get Started
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Menu className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <a href="#" className="w-full">Home</a>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <a href="#" className="w-full">How It Works</a>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <a href="#" className="w-full">Pricing</a>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <a href="#" className="w-full">Contact</a>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </header>
 
@@ -234,15 +272,15 @@ const Index = () => {
       <footer className="bg-blue-800 text-white py-10">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
+            <div className="mb-6 md:mb-0 text-center md:text-left">
               <h3 className="text-2xl font-bold">HeadshotAI</h3>
               <p className="mt-2">Transform your professional image with AI</p>
             </div>
-            <nav>
-              <ul className="flex space-x-6">
-                <li><a href="#" className="hover:text-blue-300 transition duration-300">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-blue-300 transition duration-300">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-blue-300 transition duration-300">Contact Us</a></li>
+            <nav className="mb-6 md:mb-0">
+              <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 text-center md:text-left">
+                <li><a href="#" className="hover:text-blue-300 transition duration-300 block">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-blue-300 transition duration-300 block">Terms of Service</a></li>
+                <li><a href="#" className="hover:text-blue-300 transition duration-300 block">Contact Us</a></li>
               </ul>
             </nav>
           </div>
