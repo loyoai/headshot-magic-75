@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, ArrowRight } from 'lucide-react';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-
-const stripePromise = loadStripe('your_stripe_publishable_key');
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const plans = [
   { name: 'Basic', images: 5, price: 15 },
@@ -14,51 +11,19 @@ const plans = [
   { name: 'Premium', images: 40, price: 25 },
 ];
 
-const PaymentForm = ({ selectedPlan, onSuccess }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentError, setPaymentError] = useState(null);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setIsProcessing(true);
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardElement),
-    });
-
-    if (error) {
-      setPaymentError(error.message);
-      setIsProcessing(false);
-    } else {
-      // Here you would typically send the paymentMethod.id to your server
-      // to create a charge or save the payment method for future use
-      console.log('PaymentMethod', paymentMethod);
-      setIsProcessing(false);
-      onSuccess();
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <CardElement className="p-3 border rounded mb-4" />
-      {paymentError && <div className="text-red-500 mb-4">{paymentError}</div>}
-      <Button type="submit" disabled={isProcessing} className="w-full">
-        {isProcessing ? 'Processing...' : `Pay $${selectedPlan.price}`}
-      </Button>
-    </form>
-  );
-};
-
 const GetStarted = () => {
   const [step, setStep] = useState(1);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const success = urlParams.get('success');
+    if (success === 'true') {
+      setStep(3);
+    }
+  }, [location]);
 
   const nextStep = () => {
     if (step < 3) setStep(step + 1);
@@ -68,8 +33,23 @@ const GetStarted = () => {
     if (step > 1) setStep(step - 1);
   };
 
-  const handlePaymentSuccess = () => {
-    setStep(3);
+  const handlePayment = async () => {
+    try {
+      const response = await fetch('https://your-backend-api.com/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          plan: selectedPlan.name,
+          price: selectedPlan.price,
+        }),
+      });
+      const session = await response.json();
+      window.location = session.url;
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+    }
   };
 
   const renderStep = () => {
@@ -122,9 +102,9 @@ const GetStarted = () => {
               <CardContent className="pt-6">
                 <p className="mb-4">Selected Plan: {selectedPlan.name}</p>
                 <p className="mb-4">Price: ${selectedPlan.price}</p>
-                <Elements stripe={stripePromise}>
-                  <PaymentForm selectedPlan={selectedPlan} onSuccess={handlePaymentSuccess} />
-                </Elements>
+                <Button onClick={handlePayment} className="w-full">
+                  Proceed to Payment
+                </Button>
               </CardContent>
             </Card>
             <Button onClick={prevStep} className="mt-6">
