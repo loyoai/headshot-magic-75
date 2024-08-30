@@ -208,7 +208,7 @@ const Index = () => {
             {[
               { name: 'John Doe', role: 'Marketing Executive', text: 'The AI-generated headshots were amazing! They perfectly captured my professional look and boosted my LinkedIn profile.' },
               { name: 'Jane Smith', role: 'Freelance Designer', text: 'I was skeptical at first, but the results blew me away. Highly recommended for anyone looking to upgrade their professional image!' },
-              { name: 'Mike Johnson', role: 'Startup Founder', text: 'This service saved me time and money. The quality is outstanding, and it's become an essential tool for my entire team.' }
+              { name: 'Mike Johnson', role: 'Startup Founder', text: 'This service saved me time and money. The quality is outstanding, and it\'s become an essential tool for my entire team.' }
             ].map((testimonial, index) => (
               <motion.div
                 key={testimonial.name}
