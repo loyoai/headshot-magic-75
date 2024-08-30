@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,15 +31,17 @@ const Index = () => {
             className="flex items-center"
           >
             <h1 className="text-2xl font-bold text-blue-600 mr-4">HeadshotAI</h1>
-            <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300 hidden md:inline-flex">
-              Get Started Now
-            </Button>
+            <Link to="/get-started">
+              <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300">
+                Get Started Now
+              </Button>
+            </Link>
           </motion.div>
           <motion.nav
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="hidden md:block"
+            className="hidden md:flex items-center"
           >
             <ul className="flex space-x-6">
               <li><a href="#" className="text-blue-600 hover:text-blue-800">Home</a></li>
@@ -48,9 +51,11 @@ const Index = () => {
             </ul>
           </motion.nav>
           <div className="md:hidden flex items-center">
-            <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300 mr-2">
-              Get Started
-            </Button>
+            <Link to="/get-started">
+              <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300 mr-2">
+                Get Started
+              </Button>
+            </Link>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon">
