@@ -3,12 +3,58 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, ArrowRight } from 'lucide-react';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('your_stripe_publishable_key');
 
 const plans = [
   { name: 'Basic', images: 5, price: 15 },
   { name: 'Pro', images: 15, price: 19 },
   { name: 'Premium', images: 40, price: 25 },
 ];
+
+const PaymentForm = ({ selectedPlan, onSuccess }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentError, setPaymentError] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsProcessing(true);
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: elements.getElement(CardElement),
+    });
+
+    if (error) {
+      setPaymentError(error.message);
+      setIsProcessing(false);
+    } else {
+      // Here you would typically send the paymentMethod.id to your server
+      // to create a charge or save the payment method for future use
+      console.log('PaymentMethod', paymentMethod);
+      setIsProcessing(false);
+      onSuccess();
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <CardElement className="p-3 border rounded mb-4" />
+      {paymentError && <div className="text-red-500 mb-4">{paymentError}</div>}
+      <Button type="submit" disabled={isProcessing} className="w-full">
+        {isProcessing ? 'Processing...' : `Pay $${selectedPlan.price}`}
+      </Button>
+    </form>
+  );
+};
 
 const GetStarted = () => {
   const [step, setStep] = useState(1);
@@ -20,6 +66,10 @@ const GetStarted = () => {
 
   const prevStep = () => {
     if (step > 1) setStep(step - 1);
+  };
+
+  const handlePaymentSuccess = () => {
+    setStep(3);
   };
 
   const renderStep = () => {
@@ -72,31 +122,14 @@ const GetStarted = () => {
               <CardContent className="pt-6">
                 <p className="mb-4">Selected Plan: {selectedPlan.name}</p>
                 <p className="mb-4">Price: ${selectedPlan.price}</p>
-                {/* Add payment form here */}
-                <div className="mb-4">
-                  <label className="block mb-2">Card Number</label>
-                  <input type="text" className="w-full p-2 border rounded" placeholder="1234 5678 9012 3456" />
-                </div>
-                <div className="flex mb-4">
-                  <div className="w-1/2 mr-2">
-                    <label className="block mb-2">Expiry Date</label>
-                    <input type="text" className="w-full p-2 border rounded" placeholder="MM/YY" />
-                  </div>
-                  <div className="w-1/2 ml-2">
-                    <label className="block mb-2">CVV</label>
-                    <input type="text" className="w-full p-2 border rounded" placeholder="123" />
-                  </div>
-                </div>
+                <Elements stripe={stripePromise}>
+                  <PaymentForm selectedPlan={selectedPlan} onSuccess={handlePaymentSuccess} />
+                </Elements>
               </CardContent>
             </Card>
-            <div className="mt-6 flex justify-between">
-              <Button onClick={prevStep}>
-                Back
-              </Button>
-              <Button onClick={nextStep}>
-                Pay Now <ArrowRight className="ml-2" />
-              </Button>
-            </div>
+            <Button onClick={prevStep} className="mt-6">
+              Back
+            </Button>
           </motion.div>
         );
       case 3:
