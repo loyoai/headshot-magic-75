@@ -23,7 +23,11 @@ const GetStarted = () => {
     if (success === 'true') {
       setStep(3);
     }
-    window.snaptr('track', 'PAGE_VIEW', { page_name: `get-started-step-${step}` });
+    if (window.snaptr && typeof window.snaptr === 'function') {
+      window.snaptr('track', 'PAGE_VIEW', { page_name: `get-started-step-${step}` });
+    } else {
+      console.warn('Snapchat Pixel is not loaded');
+    }
   }, [location, step]);
 
   const nextStep = () => {

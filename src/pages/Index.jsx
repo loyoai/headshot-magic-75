@@ -35,7 +35,11 @@ const Index = () => {
 
   const handleGetStarted = () => {
     trackEvent('ClickedGetStarted');
-    window.snaptr('track', 'PAGE_VIEW', { page_name: 'landing' });
+    if (window.snaptr && typeof window.snaptr === 'function') {
+      window.snaptr('track', 'PAGE_VIEW', { page_name: 'landing' });
+    } else {
+      console.warn('Snapchat Pixel is not loaded');
+    }
     navigate('/get-started');
   };
   const fadeInUp = {
