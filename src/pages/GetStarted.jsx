@@ -23,14 +23,23 @@ const GetStarted = () => {
     if (success === 'true') {
       setStep(3);
     }
-  }, [location]);
+    window.snaptr('track', 'PAGE_VIEW', { page_name: `get-started-step-${step}` });
+  }, [location, step]);
 
   const nextStep = () => {
-    if (step < 3) setStep(step + 1);
+    if (step < 3) {
+      const newStep = step + 1;
+      setStep(newStep);
+      window.snaptr('track', 'PAGE_VIEW', { page_name: `get-started-step-${newStep}` });
+    }
   };
 
   const prevStep = () => {
-    if (step > 1) setStep(step - 1);
+    if (step > 1) {
+      const newStep = step - 1;
+      setStep(newStep);
+      window.snaptr('track', 'PAGE_VIEW', { page_name: `get-started-step-${newStep}` });
+    }
   };
 
   const handlePayment = async () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,10 +9,35 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import usePlausible from '../hooks/usePlausible';
 
 const Index = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const trackEvent = usePlausible();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let scrollTimer;
+    const handleScroll = () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        trackEvent('ScrolledOneMinute');
+      }, 60000);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimer);
+    };
+  }, [trackEvent]);
+
+  const handleGetStarted = () => {
+    trackEvent('ClickedGetStarted');
+    window.snaptr('track', 'PAGE_VIEW', { page_name: 'landing' });
+    navigate('/get-started');
+  };
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -31,11 +56,9 @@ const Index = () => {
             className="flex items-center"
           >
             <h1 className="text-2xl font-bold text-blue-600 mr-4">HeadshotAI</h1>
-            <Link to="/get-started">
-              <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300">
-                Get Started Now
-              </Button>
-            </Link>
+            <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300" onClick={handleGetStarted}>
+              Get Started Now
+            </Button>
           </motion.div>
           <motion.nav
             initial={{ opacity: 0, x: 20 }}
