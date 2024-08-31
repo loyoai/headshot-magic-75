@@ -109,25 +109,53 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-blue-600 text-white py-32 mt-16">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
+      <section className="bg-[#EFEFE9] text-black py-16 mt-16">
+        <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="md:w-1/2 mb-10 md:mb-0"
+            className="text-center mb-8"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">Transform Your Headshots with AI Magic</h1>
-            <p className="text-xl mb-6">Get stunning, professional-quality headshots in minutes using our cutting-edge AI technology.</p>
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-100 transition duration-300">Get Started Now</Button>
+            <span className="inline-block bg-[#E6E6E0] text-[#4A4A4A] text-sm font-semibold px-4 py-2 rounded-full mb-4">CURATED BY PHOTOGRAPHERS</span>
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 leading-tight">AI Headshot generator<br />is The Future of Portraits</h1>
+            <p className="text-xl mb-6 max-w-3xl mx-auto">Transform your regular photos into professional headshots with our AI headshot generator. Choose your style, upload your photos, and get 100 headshots!</p>
+            <Button size="lg" className="bg-[#7F56D9] text-white hover:bg-[#6941C6] transition duration-300 rounded-full px-8 py-4 text-lg font-semibold">Get Your Headshots</Button>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="md:w-1/2"
+            className="flex justify-center items-center flex-wrap gap-4"
           >
-            <img src="https://pbs.twimg.com/media/GVg-uWNWcAAHpDS?format=jpg&name=large" alt="Before and After Headshots" className="rounded-lg shadow-2xl" />
+            <div className="flex items-center">
+              <div className="flex -space-x-2">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <img key={i} className="w-8 h-8 rounded-full border-2 border-white" src={`https://source.unsplash.com/random/100x100?portrait=${i}`} alt={`User ${i}`} />
+                ))}
+              </div>
+              <span className="ml-2 text-sm font-semibold">More than 300 000 AI Headshots already created</span>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-12 grid grid-cols-3 md:grid-cols-6 gap-4 items-center justify-items-center"
+          >
+            {['LinkedIn', 'X', 'Indeed', 'Glassdoor', 'TikTok', 'Crunchbase'].map((brand) => (
+              <img key={brand} src={`https://source.unsplash.com/random/150x50?logo=${brand}`} alt={brand} className="h-8 opacity-50" />
+            ))}
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+          >
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <img key={i} src={`https://source.unsplash.com/random/300x400?portrait=${i}`} alt={`AI Headshot ${i}`} className="w-full h-auto rounded-lg shadow-md" />
+            ))}
           </motion.div>
         </div>
       </section>

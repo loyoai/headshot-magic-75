@@ -56,6 +56,7 @@ const GetStarted = () => {
       exit={{ opacity: 0 }}
       className="text-center"
     >
+      <Progress value={66} className="w-full h-2 mb-8 bg-gray-200" indicatorClassName="bg-green-500" />
       <h1 className="text-4xl font-bold mb-6 text-black">Select a Package</h1>
       <p className="text-lg mb-8 text-black">
         Single payment, no recurring charges. Once you've paid, you'll need to upload at least 8 photos of yourself.
